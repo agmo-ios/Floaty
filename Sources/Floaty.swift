@@ -122,7 +122,7 @@ open class Floaty: UIView {
    Button color.
    */
   @objc @IBInspectable
-  open var buttonColor: UIColor = UIColor(red: 73/255.0, green: 151/255.0, blue: 241/255.0, alpha: 1)
+    open var buttonColor: UIColor = UIColor.clear
   
   /**
    Button highlighted color.
@@ -145,6 +145,16 @@ open class Floaty: UIView {
       self.setNeedsDisplay()
     }
   }
+
+    /**
+     Selected Button image.
+     */
+    @objc @IBInspectable
+    open var selectedButtonImage: UIImage? = nil {
+        didSet {
+            self.setNeedsDisplay()
+        }
+    }
   
   /**
    Plus icon color inside button.
@@ -419,9 +429,9 @@ open class Floaty: UIView {
                      usingSpringWithDamping: 0.55,
                      initialSpringVelocity: 0.3,
                      options: UIView.AnimationOptions(), animations: { () -> Void in
-                      self.plusLayer.transform = CATransform3DMakeRotation(self.degreesToRadians(self.rotationDegrees), 0.0, 0.0, 1.0)
-                      self.buttonImageView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(self.rotationDegrees))
-                      self.overlayView.alpha = 1
+                        self.overlayView.alpha = 1
+                          self.buttonImageView.backgroundColor = .clear
+                          self.buttonImageView.image = self.selectedButtonImage
       }, completion: {(f) -> Void in
         self.overlayViewDidCompleteOpenAnimation = true
         animationGroup.leave()
@@ -483,9 +493,9 @@ open class Floaty: UIView {
                      usingSpringWithDamping: 0.6,
                      initialSpringVelocity: 0.8,
                      options: [], animations: { () -> Void in
-                      self.plusLayer.transform = CATransform3DMakeRotation(self.degreesToRadians(0), 0.0, 0.0, 1.0)
-                      self.buttonImageView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(0))
-                      self.overlayView.alpha = 0
+                        self.overlayView.alpha = 0
+                        self.buttonImageView.backgroundColor = .clear
+                        self.buttonImageView.image = self.buttonImage
       }, completion: {(f) -> Void in
         if self.overlayViewDidCompleteOpenAnimation {
           self.overlayView.removeFromSuperview()
